@@ -6,5 +6,5 @@ The data includes ID, AlertTime, TimeCreated, Status, and TotalToken. The import
 To prevent the abuse of token, I put a rule in Lambda function to check if the total number of used tokens reaches the set limit. Once it reaches, any subsequent requests from users will be refused until the next day. However, as I said the number of free daily token is limited, so some users may be refused to use this reminder again.
 Every 1 minute, AWS EventBridge will trigger Lambda to query the DynamoDB database to check which record is ready for alerting. Once ready, Lambda will send the alert through API Gateway to the S3 website again, the message will appear on the page with a funny Aussie sound.
 Transformation to serverless to real server(on EC2) may be conducted soon, together with monitoring tools and DevOps use.
-Thanks for trying.
+Thanks for trying. 
 DeMinh DeRozan
