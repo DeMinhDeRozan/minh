@@ -15,7 +15,7 @@
         .msg { max-width: 75%; padding: 8px 14px; border-radius: 18px; font-size: 15px; animation: in 0.3s ease-out; word-wrap: break-word; }
         .bot { align-self: flex-start; background: var(--bot); color: #050505; border-bottom-left-radius: 4px; }
         .user { align-self: flex-end; background: var(--user); color: #fff; border-bottom-right-radius: 4px; }
-        .remind-alert { align-self: center; background: var(--remind) !important; color: white !important; font-weight: bold; text-align: center; border-radius: 12px; margin: 10px 0; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .remind-alert { align-self: center; background: var(--remind) !important; color: white !important; font-weight: bold; text-align: center; border-radius: 12px; margin: 10px 0; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 12px 18px; }
         @keyframes in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pop { from { opacity: 0; scale: 0.8; } to { opacity: 1; scale: 1; } }
         .input-bar { padding: 12px; border-top: 1px solid #eee; display: flex; align-items: center; gap: 8px; }
@@ -32,9 +32,7 @@
         </div>
         <button id="clearBtn" onclick="clearHistory()" style="font-size: 10px; color: #999; border: 1px solid #eee; border-radius: 4px; padding: 2px 5px;">Clear Chat</button>
     </div>
-
     <div class="chat-box" id="chatBox"></div>
-
     <div class="input-bar">
         <input type="text" id="userInput" placeholder="Type here, ya legend..." autocomplete="off">
         <button onclick="handleSend()">SEND</button>
@@ -48,19 +46,17 @@
     bell.volume = 0.8;
 
     let isSoundEnabled = false;
-
     const SEND_URL  = "https://rpjf4296xk.execute-api.ap-southeast-2.amazonaws.com/Production/reminder";
     const CHECK_URL = "https://rpjf4296xk.execute-api.ap-southeast-2.amazonaws.com/Production/check";
 
     function unlockSound() {
         if (isSoundEnabled) return;
-        
         bell.play().then(() => {
             bell.pause();
             bell.currentTime = 0;
             isSoundEnabled = true;
             console.log("Sound enabled");
-        }).catch(e => console.error("Waiting for interaction..."));
+        }).catch(e => console.log("Waiting for user interaction..."));
     }
 
     window.onload = () => {
@@ -70,6 +66,8 @@
         } else {
             history.forEach(m => appendMessage(m.txt, m.side, null, false));
         }
+        
+        autoCheck();
     };
 
     function saveHistory(txt, side) {
@@ -101,6 +99,7 @@
         try {
             const res = await fetch(SEND_URL, {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: "web_user", task_input: text })
             });
             const data = await res.json();
@@ -116,18 +115,23 @@
 
     async function autoCheck() {
         try {
-            const res = await fetch(CHECK_URL);
+            const res = await fetch(CHECK_URL + '?t=' + Date.now());
             const data = await res.json();
+            
             if (data.reminders && data.reminders.length > 0) {
                 data.reminders.forEach(m => {
                     if (isSoundEnabled) {
                         bell.currentTime = 0;
-                        bell.play().catch(e => console.error(e));
+                        bell.play().catch(e => console.error("Audio play error:", e));
                     }
+                    
                     appendMessage("🚨 OI OI OI! " + m.toUpperCase(), 'remind-alert');
+                    alert("🚨 REMINDER: " + m);
                 });
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error("Error: autoCheck:", e);
+        }
     }
 
     function appendMessage(txt, side, id, save = true) {
@@ -144,11 +148,10 @@
         if (e.key === "Enter") handleSend();
     });
 
-    // Ép unlock khi chạm vào bất cứ đâu
     document.addEventListener('click', unlockSound, { once: true });
     document.addEventListener('touchstart', unlockSound, { once: true });
 
-    setInterval(autoCheck, 15000);
+    setInterval(autoCheck, 10000);
 </script>
 </body>
 </html>
