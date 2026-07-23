@@ -1,4 +1,7 @@
-____________________________Reminding You - My Bro v.1.0.0____________________________
+
+<h2 align="center">________Reminding You - My Bro v.1.0.0________</h2>
+
+
 This is my fun serverless project using AWS services and html+css+js elements.
 
 
