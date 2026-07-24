@@ -15,10 +15,12 @@
 
 This is my fun serverless project using AWS services and html+css+js elements.
 
-To try this, just type what you will have to do later (I mean in next hour or next minutes), and **JUST 1 TASK** please! More than 2 tasks at the same time costs too many tokens, and sometimes the model becomes a fool. Then just wait for the alert.
+To try this, just type what you will have to do later with the specific time(I mean in next hour or next minutes), and **JUST 1 TASK** please! More than 2 tasks at the same time costs too many tokens, and sometimes the model becomes a fool. Then just wait for the alert. (I recommend alert in next 2 minutes for quick check)
 
 
-The link is in the asset folder.
+Example: Tell me go out at 18:00
+
+The web link is in the asset folder.
 
 ---
 
@@ -32,7 +34,7 @@ The data includes `ID`, `AlertTime`, `TimeCreated`, `Status`, and `TotalToken`. 
 
 ### 🛡️ Cost Control & Automation
 
-To prevent the abuse of token, I put a rule in Lambda function to check if the total number of used tokens reaches the set limit. Once it reaches, any subsequent requests from users will be refused until the next day. However, as I said the number of free daily token is limited, so some users may be refused to use this reminder again.
+To prevent the abuse of token, I put a rule in Lambda function to check if the total number of used tokens reaches the daily set limit. Once it reaches, any subsequent requests from users will be refused until the next day. However, as I said the number of free daily token is limited, so some users may be refused to use this reminder again.
 
 Every 1 minute, AWS EventBridge will trigger Lambda to query the DynamoDB database to check which record is ready for alerting. Once ready, Lambda will send the alert through API Gateway to the S3 website again, the message will appear on the page with a funny Aussie sound.
 
