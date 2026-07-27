@@ -1,4 +1,4 @@
-<h1 align="center">🚀 Reminding You - My Bro v.1.0.0 🚀</h1>
+<h1 align="center">🚀 Fun Reminder v.1.0.0 🚀</h1>
 
 <p align="center">
   <img src="./asset/icons8-aws.svg" width="45" title="Amazon Web Services" alt="AWS" /> &nbsp;&nbsp;
