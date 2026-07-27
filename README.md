@@ -13,7 +13,7 @@
 
 ---
 
-This is my fun serverless project using AWS services and html+css+js elements.
+This is my fun serverless project using AWS services and front-end elements.
 
 To try this, just type what you will have to do later with the specific time(I mean in next hour or next minutes), and **JUST 1 TASK** please! More than 2 tasks at the same time costs too many tokens, and sometimes the model becomes a fool. Then just wait for the alert. (I recommend alert in next 2 minutes for quick check)
 
